@@ -1,5 +1,6 @@
 package com.exchange.coins.domain;
 
+import com.exchange.coins.exceptions.MachineOutOfCoinsException;
 import com.exchange.coins.exceptions.NotEnoughCoinsException;
 import com.exchange.coins.persist.Coin;
 import com.exchange.coins.persist.CoinsCache;
@@ -35,7 +36,8 @@ public class ExchangeServiceTest {
     }
 
     @Test
-    public void shouldReturnAmountOfCoinsSucessfully() throws NotEnoughCoinsException {
+    public void shouldReturnAmountOfCoinsSucessfully()
+            throws NotEnoughCoinsException, MachineOutOfCoinsException {
         Integer userMockInput = 30;
 
         Map<Double, Integer> cents =
