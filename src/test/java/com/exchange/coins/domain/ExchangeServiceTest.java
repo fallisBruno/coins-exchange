@@ -1,18 +1,24 @@
 package com.exchange.coins.domain;
 
-import com.exchange.coins.exceptions.CoinsNotConfiguredException;
 import com.exchange.coins.exceptions.NotEnoughCoinsException;
 import com.exchange.coins.persist.Coin;
 import com.exchange.coins.persist.CoinsCache;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class ExchangeTests {
+@ExtendWith(MockitoExtension.class)
+public class ExchangeServiceTest {
+
+    @InjectMocks
+    private ExchangeService victim;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -29,10 +35,11 @@ public class ExchangeTests {
     }
 
     @Test
-    public void shouldReturnAmountOfCoinsSucessfully() throws NotEnoughCoinsException, CoinsNotConfiguredException {
+    public void shouldReturnAmountOfCoinsSucessfully() throws NotEnoughCoinsException {
         Integer userMockInput = 30;
 
-        Map<Double, Integer> cents = Exchange.getCents(userMockInput);
+        Map<Double, Integer> cents =
+                victim.exchange(userMockInput);
 
         Assertions.assertEquals(100, cents.get(0.25));
         Assertions.assertEquals(50, cents.get(0.10));
@@ -44,9 +51,10 @@ public class ExchangeTests {
     public void shouldThrowNotEnoughCoinsException() {
         Integer userMockInput = 60;
 
-        NotEnoughCoinsException exception = Assertions.assertThrows(NotEnoughCoinsException.class, () -> Exchange.getCents(userMockInput));
+        NotEnoughCoinsException exception =
+                Assertions.assertThrows(NotEnoughCoinsException.class, () -> victim.exchange(userMockInput));
 
-        Assertions.assertEquals("Not enough coins for $"+userMockInput, exception.getMessage());
+        Assertions.assertEquals("Not enough coins for $" + userMockInput, exception.getMessage());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.exchange.coins.config;
 
 import com.exchange.coins.exceptions.CoinsNotConfiguredException;
+import com.exchange.coins.exceptions.MachineOutOfCoinsException;
 import com.exchange.coins.exceptions.NotEnoughCoinsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({CoinsNotConfiguredException.class})
     public ResponseEntity<Object> handleCoinsNotConfiguredException(CoinsNotConfiguredException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler({MachineOutOfCoinsException.class})
+    public ResponseEntity<Object> handleCoinsMachineOutOfCoinsException(MachineOutOfCoinsException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exception.getMessage());

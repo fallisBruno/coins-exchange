@@ -1,29 +1,14 @@
 package com.exchange.coins.domain;
 
-import com.exchange.coins.exceptions.CoinsNotConfiguredException;
-import com.exchange.coins.exceptions.NotEnoughCoinsException;
 import com.exchange.coins.persist.Coin;
-import com.exchange.coins.persist.CoinsCache;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class Exchange {
 
-    public static Map<Double, Integer> getCents(Integer moneyInput) throws CoinsNotConfiguredException, NotEnoughCoinsException {
-
-        LinkedList<Coin> cachedCoins = CoinsCache.getCoins();
-
-        if (moneyInput > maximumExchangePossible(cachedCoins)) throw new NotEnoughCoinsException(moneyInput);
-
-        Map<Double, Integer> centsResultMap = calculateCents(moneyInput, cachedCoins);
-
-        CoinsCache.updateWithdrawCoins(centsResultMap);
-
-        return centsResultMap;
-    }
-
-    private static Map<Double, Integer> calculateCents(Integer moneyInput, LinkedList<Coin> coins) {
-
+    public static Map<Double, Integer> calculateCents(Integer moneyInput, LinkedList<Coin> coins) {
         Map<Double, Integer> resultMap = new HashMap<>();
 
         for (Coin cent : coins) {
@@ -36,7 +21,7 @@ public class Exchange {
         return resultMap;
     }
 
-    private static Double maximumExchangePossible(LinkedList<Coin> cachedCoins){
+    public static Double maximumExchangePossible(LinkedList<Coin> cachedCoins) {
         return cachedCoins.stream()
                 .map(c -> c.getCoin() * c.getAmount())
                 .reduce(0.0, Double::sum);

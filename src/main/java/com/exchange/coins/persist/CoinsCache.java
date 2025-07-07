@@ -28,17 +28,23 @@ public class CoinsCache {
                 CACHE.add(new Coin(coinValue, amount));
             }
 
-            if(CACHE.isEmpty()) throw new CoinsNotConfiguredException();
+            if (CACHE.isEmpty())
+                throw new CoinsNotConfiguredException();
 
-        } catch (IOException | CoinsNotConfiguredException e) {
+        } catch (IOException |
+                 CoinsNotConfiguredException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void startCache() {
+        printCurrentCache();
+        System.out.println("Cache started!");
+    }
+
+    private static void printCurrentCache() {
         CACHE.forEach((coin) ->
                 System.out.println(MessageFormat.format("Coin {0} initiated with {1} coins.", coin.getCoin(), coin.getAmount())));
-        System.out.println("Cache started!");
     }
 
     public static LinkedList<Coin> getCoins() {
@@ -52,6 +58,7 @@ public class CoinsCache {
                 coin.setAmount(newAmount);
             }
         }
+        printCurrentCache();
     }
 
 }
