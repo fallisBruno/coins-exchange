@@ -44,7 +44,9 @@ public class CoinsCache {
 
     private static void printCurrentCache() {
         CACHE.forEach((coin) ->
-                System.out.println(MessageFormat.format("Coin {0} initiated with {1} coins.", coin.getCoin(), coin.getAmount())));
+                System.out.println(MessageFormat.format(
+                        "Coin {0} has {1} coins.",
+                        coin.getCoin(), coin.getAmount())));
     }
 
     public static LinkedList<Coin> getCoins() {
